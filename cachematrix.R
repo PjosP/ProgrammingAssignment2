@@ -5,6 +5,7 @@
 ## Autor: pablo.proano@epn.edu.ec
 
 makeCacheMatrix <- function(x = matrix()) {
+  x+x
 
 }
 
