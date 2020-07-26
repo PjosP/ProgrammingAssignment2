@@ -40,7 +40,6 @@ makeCacheMatrix <- function(x = matrix()) {
 ## that a previous matrix used before.
 
 cacheSolve <- function(x, ...) {
-        ## Return a matrix that is the inverse of 'x'
   m_inv <- x$get_inverse()
   data <- x$getval()
   data_prev <- x$getprevious()
