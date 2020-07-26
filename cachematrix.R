@@ -5,15 +5,25 @@
 ## Autor: pablo.proano@epn.edu.ec
 
 makeCacheMatrix <- function(x = matrix()) {
-  m <- NULL
+  m_inv <- NULL
+  y<-NULL
+  z<-NULL
+  
   setval <- function(y) {
     x <<- y
-    m <<- NULL
+    m_inv <<- NULL
   }
   getval <- function() x
-  set_inverse <- function(solve) m <<- solve
-  get_inverse <- function() m
-  list(setval = setval, getval = getval,set_inverse = set_inverse, get_inverse = get_inverse)
+  
+  setprevious <- function(y) {
+    z <<- y
+  }
+  getprevious <- function() z
+  
+  set_inverse <- function(solve) m_inv <<- solve
+  get_inverse <- function() m_inv
+  list(setval = setval, getval = getval,set_inverse = set_inverse, get_inverse = get_inverse,
+       setprevious=setprevious,getprevious=getprevious  )
 }
 
 
@@ -22,13 +32,19 @@ makeCacheMatrix <- function(x = matrix()) {
 
 cacheSolve <- function(x, ...) {
         ## Return a matrix that is the inverse of 'x'
-  m <- x$get_inverse()
-  if(!is.null(m)) {
-    message("getting cached data")
-    return(m)
-  }
+  m_inv <- x$get_inverse()
   data <- x$getval()
-  m <- solve(data, ...)
-  x$set_inverse(m)
-  m
+  data_prev <- x$getprevious()
+  print(data)
+  print(data_prev)
+  if(!is.null(m_inv)) {
+    if(!is.null(data_prev)){
+      message("getting cached data")
+      return(m_inv)
+    }
+  }
+  m_inv <- solve(data, ...)
+  x$set_inverse(m_inv)
+  x$setprevious(data)
+  m_inv
 }
